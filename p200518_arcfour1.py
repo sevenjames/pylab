@@ -1,6 +1,7 @@
 '''
 2020-05-18
 ARCFOUR aka RC4 stream cipher algorithm
+For educational purposes only.
 '''
 
 def KSA(key):
@@ -33,12 +34,9 @@ def arcfour_encode(key, text):
     key = convert_string_to_codelist(key)
     text = convert_string_to_codelist(text)
     ks = keystream(key)
-    output = []
-    for c in text:
-        output.append('{:02X}'.format(c ^ next(ks)))
-    #TODO can this be compressed into a list comprehension?
-    #TODO consider building output raw, then reformat to hex later?
+    output = ['{:02X}'.format(c ^ next(ks)) for c in text]
     return ''.join(output) #converts list of bytes to string of bytes
+    #TODO consider building output raw, then reformat to hex later?
 
 def arcfour_decode(key, text):
     #TODO this
@@ -57,7 +55,6 @@ def convert_hex_string_to_codelist(hexstring):
     return list(bytes.fromhex(hexstring))
 
 def arctest():
-    '''Test stuff.'''
     tv_keys = ['Key',
                'Wiki',
                'Secret']
@@ -79,3 +76,5 @@ def arctest():
         else:
             print('Poop!')
         print()
+
+arctest()
