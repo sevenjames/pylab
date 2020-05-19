@@ -7,7 +7,6 @@ Implement the quicksort algorithm, as defined by wikipedia
 '''
 
 import random
-import numpy.random as nprand
 
 def quicksort(the_list):
     ''' sort the given list using the quicksort algorithm
@@ -33,12 +32,7 @@ def test_sort():
     int_range, int_count = 99, 12
     random_integers = [random.randrange(int_range) for i in range(int_count)]
     sorted_random_integers = quicksort(random_integers)
-    print(random_integers)
-    print(sorted_random_integers)
-    
-    random_integers = nprand.randint(int_range, size=int_count)
-    sorted_random_integers = quicksort(random_integers)
-    print(random_integers)
-    print(sorted_random_integers)
+    print("random integers:", random_integers)
+    print("sorted integers:", sorted_random_integers)
 
 test_sort()
