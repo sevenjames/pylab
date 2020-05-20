@@ -24,28 +24,34 @@ def PRNG(S):
         K = S[(S[i] + S[j]) % 256]
         yield K
 
-def arcfour_crypt(key, text):
-    '''Encrypt/decrypt a list of decimal integer bytes.'''
+def arcfour_crypt(key, bytelist):
+    '''Process a list of decimal integer bytes with ARCFOUR stream cipher.'''
     keystream = PRNG(KSA(key))
-    return [c ^ next(keystream) for c in text]
+    return [b ^ next(keystream) for b in bytelist]
 
 
-def convert_stringtxt_to_listbytes(stringtxt):
+def convert_textstring_to_bytelist(textstring):
     ''' 'foo' >> [102, 111, 111] '''
-    return [ord(c) for c in stringtxt]
+    return [ord(c) for c in textstring]
 
-def convert_listbytes_to_stringhex(listbytes):
+def convert_bytelist_to_hexstring(bytelist):
     ''' [102, 111, 111] >> '666F6F' '''
-    return bytes(listbytes).hex().upper()
+    return bytes(bytelist).hex().upper()
 
-def convert_stringhex_to_listbytes(stringhex):
+def convert_hexstring_to_bytelist(hexstring):
     ''' '666F6F' >> [102, 111, 111] '''
-    return list(bytes.fromhex(stringhex))
+    return list(bytes.fromhex(hexstring))
 
-def convert_listbytes_to_stringtxt(listbytes):
+def convert_bytelist_to_textstring(bytelist):
     ''' [102, 111, 111] >> 'foo' '''
-    return ''.join([chr(c) for c in listbytes])
+    return ''.join([chr(b) for b in bytelist])
 
+# TODO write main interface function to take inputs
+
+# TODO write functions for decrypt and encrypt
+
+def encrypt(key, txt):
+    pass
 
 def arctest():
     '''Vector Tests'''
@@ -58,10 +64,10 @@ def arctest():
         print('Key:', key)
         print('Text:', txt)
         print('Expect:', exp)
-        key = convert_stringtxt_to_listbytes(key)
-        txt = convert_stringtxt_to_listbytes(txt)
+        key = convert_textstring_to_bytelist(key)
+        txt = convert_textstring_to_bytelist(txt)
         enc = arcfour_crypt(key, txt)
-        enc = convert_listbytes_to_stringhex(enc)
+        enc = convert_bytelist_to_hexstring(enc)
         print('Actual:', enc)
         if enc == exp:
             print('Success')
