@@ -24,15 +24,10 @@ def PRNG(S):
         K = S[(S[i] + S[j]) % 256]
         yield K
 
-def keystream(key):
-    '''Create the keystream generator object.'''
-    S = KSA(key)
-    return PRNG(S)
-
 def arcfour_encode(key, text):
     '''Use ARCFOUR to encode/decode a list of decimal integer bytes.'''
-    ks = keystream(key)
-    return [c ^ next(ks) for c in text]
+    keystream = PRNG(KSA(key))
+    return [c ^ next(keystream) for c in text]
 
 def convert_stringtxt_to_listbytes(stringtxt):
     '''Convert a string of text to a list of bytes.
