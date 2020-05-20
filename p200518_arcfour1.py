@@ -31,28 +31,39 @@ def keystream(key):
     return PRNG(S)
 
 def arcfour_encode(key, text):
-    key = convert_string_to_codelist(key)
-    text = convert_string_to_codelist(text)
+    # TODO only accept lists as input. preconvert them elsewhere.
+    key = convert_stringtxt_to_listbytes(key)
+    text = convert_stringtxt_to_listbytes(text)
     ks = keystream(key)
+    #build list of hex bytes
     output = ['{:02X}'.format(c ^ next(ks)) for c in text]
-    return ''.join(output) #converts list of bytes to string of bytes
+    # convert list of hex bytes to string of hex bytes
+    return ''.join(output)
     #TODO consider building output raw, then reformat to hex later?
 
 def arcfour_decode(key, text):
-    #TODO this
+    #TODO write decode function
     pass
 
-def convert_string_to_codelist(string):
-    '''Convert a string to a list of codepoint values.'''
-    '''Use to convert key from string to list for use in KSA.'''
-    return [ord(c) for c in string]
+def convert_stringtxt_to_listbytes(stringtxt):
+    '''Convert a string of text to a list of bytes.
+    'foo' >> [102, 111, 111] '''
+    return [ord(c) for c in stringtxt]
 
-def convert_codelist_to_hex_string(codelist):
-    '''Convert a list of decimal codepoints to a string of hex'''
+def convert_listbytes_to_stringhex(codelist):
+    '''Convert a list of bytes to a string of hex bytes.
+    [102, 111, 111] >> '666F6F' '''
     return bytes(codelist).hex().upper()
 
-def convert_hex_string_to_codelist(hexstring):
+def convert_stringhex_to_listbytes(hexstring):
+    '''Convert string of hex bytes to a list of bytes.
+    '666F6F' >> [102, 111, 111] '''
     return list(bytes.fromhex(hexstring))
+
+def convert_listbytes_to_stringtxt():
+    '''Convert list of bytes to string of text. (use chr()?)
+    [102, 111, 111] >> 'foo' '''
+    pass
 
 def arctest():
     tv_keys = ['Key',
