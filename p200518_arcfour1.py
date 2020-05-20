@@ -1,33 +1,35 @@
 '''
 2020-05-18
-ARCFOUR aka RC4 stream cipher algorithm
-From: https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
+ARCFOUR aka RC4 stream cipher algorithm.
+References:
+https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
+https://en.wikipedia.org/wiki/RC4
 For educational purposes only.
 '''
 
-def KSA(key):
+def ksa(key):
     '''Key Scheduling Algorithm'''
     keylen = len(key)
-    S = list(range(256))
+    s = list(range(256))
     j = 0
     for i in range(256):
-        j = (j + S[i] + key[i % keylen]) % 256
-        S[i], S[j] = S[j], S[i]
-    return S
+        j = (j + s[i] + key[i % keylen]) % 256
+        s[i], s[j] = s[j], s[i]
+    return s
 
-def PRNG(S):
+def prng(s):
     '''Pseudo-Random Number Generator Algorithm'''
     i, j = 0, 0
     while True:
         i = (i + 1) % 256
-        j = (j + S[i]) % 256
-        S[i], S[j] = S[j], S[i]
-        K = S[(S[i] + S[j]) % 256]
-        yield K
+        j = (j + s[i]) % 256
+        s[i], s[j] = s[j], s[i]
+        k = s[(s[i] + s[j]) % 256]
+        yield k
 
-def arcfour_crypt(key, bytelist):
+def cipher(key, bytelist):
     '''Process a list of decimal integer bytes with ARCFOUR stream cipher.'''
-    keystream = PRNG(KSA(key))
+    keystream = prng(ksa(key))
     return [b ^ next(keystream) for b in bytelist]
 
 
@@ -67,7 +69,7 @@ def arctest():
         print('Expect:', exp)
         key = convert_textstring_to_bytelist(key)
         txt = convert_textstring_to_bytelist(txt)
-        enc = arcfour_crypt(key, txt)
+        enc = cipher(key, txt)
         enc = convert_bytelist_to_hexstring(enc)
         print('Actual:', enc)
         if enc == exp:
