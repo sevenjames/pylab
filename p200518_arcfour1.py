@@ -27,11 +27,22 @@ def prng(s):
         k = s[(s[i] + s[j]) % 256]
         yield k
 
-def cipher(key, bytelist):
+def cipher(key, dat):
     '''Process a list of decimal integer bytes with ARCFOUR stream cipher.'''
     keystream = prng(ksa(key))
-    return [b ^ next(keystream) for b in bytelist]
+    return [b ^ next(keystream) for b in dat]
 
+def encrypt(key, dat):
+    '''Encrypt text string to string of hex bytes.'''
+    key = convert_textstring_to_bytelist(key)
+    dat = convert_textstring_to_bytelist(dat)
+    return convert_bytelist_to_hexstring(cipher(key, dat))
+
+def decrypt(key, dat):
+    '''Decrypt string of hex bytes to string.'''
+    key = convert_textstring_to_bytelist(key)
+    dat = convert_hexstring_to_bytelist(dat)
+    return convert_bytelist_to_textstring(cipher(key, dat))
 
 def convert_textstring_to_bytelist(textstring):
     ''' 'foo' >> [102, 111, 111] '''
@@ -49,13 +60,6 @@ def convert_bytelist_to_textstring(bytelist):
     ''' [102, 111, 111] >> 'foo' '''
     return ''.join([chr(b) for b in bytelist])
 
-# TODO write main interface function to take inputs
-
-# TODO write functions for decrypt and encrypt
-
-def encrypt(key, txt):
-    pass
-
 def arctest():
     '''Vector Tests'''
     test_vectors = [
@@ -67,17 +71,9 @@ def arctest():
         print('Key:', key)
         print('Text:', txt)
         print('Expect:', exp)
-        key = convert_textstring_to_bytelist(key)
-        txt = convert_textstring_to_bytelist(txt)
-        enc = cipher(key, txt)
-        enc = convert_bytelist_to_hexstring(enc)
+        enc = encrypt(key, txt)
         print('Actual:', enc)
-        if enc == exp:
-            print('Success')
-        else:
-            print('Error: output does not match expectation')
-        print()
-
+        print('Success' if enc == exp else 'Fail','\n')
 
 if __name__ == '__main__':
     arctest()
