@@ -26,66 +26,57 @@ def PRNG(S):
 
 def keystream(key):
     '''Create the keystream generator object.'''
-    '''Key must be a list of decimal values. Conversion is handled elsewhere.'''
     S = KSA(key)
     return PRNG(S)
 
 def arcfour_encode(key, text):
-    # TODO only accept lists as input. preconvert them elsewhere.
-    key = convert_stringtxt_to_listbytes(key)
-    text = convert_stringtxt_to_listbytes(text)
+    '''Use ARCFOUR to encode/decode a list of decimal integer bytes.'''
     ks = keystream(key)
     #build list of hex bytes
     output = ['{:02X}'.format(c ^ next(ks)) for c in text]
     # convert list of hex bytes to string of hex bytes
     return ''.join(output)
-    #TODO consider building output raw, then reformat to hex later?
-
-def arcfour_decode(key, text):
-    #TODO write decode function
-    pass
+    #TODO build output as list, convert elsewhere.
 
 def convert_stringtxt_to_listbytes(stringtxt):
     '''Convert a string of text to a list of bytes.
     'foo' >> [102, 111, 111] '''
     return [ord(c) for c in stringtxt]
 
-def convert_listbytes_to_stringhex(codelist):
+def convert_listbytes_to_stringhex(listbytes):
     '''Convert a list of bytes to a string of hex bytes.
     [102, 111, 111] >> '666F6F' '''
-    return bytes(codelist).hex().upper()
+    return bytes(listbytes).hex().upper()
 
-def convert_stringhex_to_listbytes(hexstring):
+def convert_stringhex_to_listbytes(stringhex):
     '''Convert string of hex bytes to a list of bytes.
     '666F6F' >> [102, 111, 111] '''
-    return list(bytes.fromhex(hexstring))
+    return list(bytes.fromhex(stringhex))
 
-def convert_listbytes_to_stringtxt():
+def convert_listbytes_to_stringtxt(listbytes):
     '''Convert list of bytes to string of text. (use chr()?)
     [102, 111, 111] >> 'foo' '''
-    pass
+    return ''.join([chr(c) for c in listbytes])
 
 def arctest():
-    tv_keys = ['Key',
-               'Wiki',
-               'Secret']
-    tv_txts = ['Plaintext',
-               'pedia',
-               'Attack at dawn']
-    tv_cyph = ['BBF316E8D940AF0AD3',
-               '1021BF0420',
-               '45A01F645FC35B383552544B9BF5']
-    for i in range(len(tv_keys)): # PEP8 C0200
-        #TODO use: for i,item in enumerate(sequence):
-        enc = arcfour_encode(tv_keys[i], tv_txts[i])
-        print('Key:', tv_keys[i])
-        print('Text:', tv_txts[i])
-        print('Expect:', tv_cyph[i])
+    '''tests'''
+    test_vectors = [
+        ('Key', 'Plaintext', 'BBF316E8D940AF0AD3'),
+        ('Wiki', 'pedia', '1021BF0420'),
+        ('Secret', 'Attack at dawn', '45A01F645FC35B383552544B9BF5')]
+    for vector in test_vectors:
+        key, txt, exp = vector
+        print('Key:', key)
+        print('Text:', txt)
+        print('Expect:', exp)
+        key = convert_stringtxt_to_listbytes(key)
+        txt = convert_stringtxt_to_listbytes(txt)
+        enc = arcfour_encode(key, txt)
         print('Actual:', enc)
-        if enc == tv_cyph[i]:
-            print('Success!')
+        if enc == exp:
+            print('Success')
         else:
-            print('Poop!')
+            print('Error: output does not match expectation')
         print()
 
 arctest()
