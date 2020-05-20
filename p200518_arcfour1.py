@@ -60,20 +60,30 @@ def convert_bytelist_to_textstring(bytelist):
     ''' [102, 111, 111] >> 'foo' '''
     return ''.join([chr(b) for b in bytelist])
 
-def arctest():
+def vector_tests():
     '''Vector Tests'''
     test_vectors = [
         ('Key', 'Plaintext', 'BBF316E8D940AF0AD3'),
         ('Wiki', 'pedia', '1021BF0420'),
         ('Secret', 'Attack at dawn', '45A01F645FC35B383552544B9BF5')]
+    print('TEST ENCRYPTION ALGORITHM')
     for vector in test_vectors:
         key, txt, exp = vector
+        out = encrypt(key, txt)
         print('Key:', key)
         print('Text:', txt)
         print('Expect:', exp)
-        enc = encrypt(key, txt)
-        print('Actual:', enc)
-        print('Success' if enc == exp else 'Fail','\n')
+        print('Actual:', out)
+        print('Success' if out == exp else 'Fail','\n')
+    print('TEST DECRYPTION ALGORITHM')
+    for vector in test_vectors:
+        key, txt, exp = vector
+        out = decrypt(key, exp)
+        print('Key:', key)
+        print('Data:', exp)
+        print('Expect:', txt)
+        print('Actual:', out)
+        print('Success' if out == txt else 'Fail','\n')
 
 if __name__ == '__main__':
-    arctest()
+    vector_tests()
