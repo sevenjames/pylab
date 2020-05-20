@@ -32,11 +32,7 @@ def keystream(key):
 def arcfour_encode(key, text):
     '''Use ARCFOUR to encode/decode a list of decimal integer bytes.'''
     ks = keystream(key)
-    #build list of hex bytes
-    output = ['{:02X}'.format(c ^ next(ks)) for c in text]
-    # convert list of hex bytes to string of hex bytes
-    return ''.join(output)
-    #TODO build output as list, convert elsewhere.
+    return [c ^ next(ks) for c in text]
 
 def convert_stringtxt_to_listbytes(stringtxt):
     '''Convert a string of text to a list of bytes.
@@ -72,6 +68,7 @@ def arctest():
         key = convert_stringtxt_to_listbytes(key)
         txt = convert_stringtxt_to_listbytes(txt)
         enc = arcfour_encode(key, txt)
+        enc = convert_listbytes_to_stringhex(enc)
         print('Actual:', enc)
         if enc == exp:
             print('Success')
