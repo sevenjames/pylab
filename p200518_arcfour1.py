@@ -1,6 +1,7 @@
 '''
 2020-05-18
 ARCFOUR aka RC4 stream cipher algorithm
+From: https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
 For educational purposes only.
 '''
 
