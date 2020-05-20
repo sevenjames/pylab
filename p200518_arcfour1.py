@@ -24,33 +24,31 @@ def PRNG(S):
         K = S[(S[i] + S[j]) % 256]
         yield K
 
-def arcfour_encode(key, text):
-    '''Use ARCFOUR to encode/decode a list of decimal integer bytes.'''
+def arcfour_crypt(key, text):
+    '''Encrypt/decrypt a list of decimal integer bytes.'''
     keystream = PRNG(KSA(key))
     return [c ^ next(keystream) for c in text]
 
+
 def convert_stringtxt_to_listbytes(stringtxt):
-    '''Convert a string of text to a list of bytes.
-    'foo' >> [102, 111, 111] '''
+    ''' 'foo' >> [102, 111, 111] '''
     return [ord(c) for c in stringtxt]
 
 def convert_listbytes_to_stringhex(listbytes):
-    '''Convert a list of bytes to a string of hex bytes.
-    [102, 111, 111] >> '666F6F' '''
+    ''' [102, 111, 111] >> '666F6F' '''
     return bytes(listbytes).hex().upper()
 
 def convert_stringhex_to_listbytes(stringhex):
-    '''Convert string of hex bytes to a list of bytes.
-    '666F6F' >> [102, 111, 111] '''
+    ''' '666F6F' >> [102, 111, 111] '''
     return list(bytes.fromhex(stringhex))
 
 def convert_listbytes_to_stringtxt(listbytes):
-    '''Convert list of bytes to string of text. (use chr()?)
-    [102, 111, 111] >> 'foo' '''
+    ''' [102, 111, 111] >> 'foo' '''
     return ''.join([chr(c) for c in listbytes])
 
+
 def arctest():
-    '''tests'''
+    '''Vector Tests'''
     test_vectors = [
         ('Key', 'Plaintext', 'BBF316E8D940AF0AD3'),
         ('Wiki', 'pedia', '1021BF0420'),
@@ -62,7 +60,7 @@ def arctest():
         print('Expect:', exp)
         key = convert_stringtxt_to_listbytes(key)
         txt = convert_stringtxt_to_listbytes(txt)
-        enc = arcfour_encode(key, txt)
+        enc = arcfour_crypt(key, txt)
         enc = convert_listbytes_to_stringhex(enc)
         print('Actual:', enc)
         if enc == exp:
@@ -71,4 +69,6 @@ def arctest():
             print('Error: output does not match expectation')
         print()
 
-arctest()
+
+if __name__ == '__main__':
+    arctest()
