@@ -89,7 +89,7 @@ def vector_tests():
         print('Success' if out == txt else 'Fail', '\n')
 
 def nonascii_test():
-    print(encrypt('foo','bặr'))
+    print(encrypt('foo','băr'))
 
 if __name__ == '__main__':
     # vector_tests()
