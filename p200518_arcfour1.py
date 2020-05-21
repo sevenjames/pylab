@@ -6,6 +6,9 @@ https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
 https://en.wikipedia.org/wiki/RC4
 For educational purposes only.
 '''
+# BUG : Only works on ASCII text.
+# Most likely due to working with characters instead of bytes.
+# ASCII chars are 1 byte so that works. But non ASCII chars are more bytes.
 
 def ksa(key):
     '''Key Scheduling Algorithm'''
@@ -74,7 +77,7 @@ def vector_tests():
         print('Text:', txt)
         print('Expect:', exp)
         print('Actual:', out)
-        print('Success' if out == exp else 'Fail','\n')
+        print('Success' if out == exp else 'Fail', '\n')
     print('TEST DECRYPTION ALGORITHM')
     for vector in test_vectors:
         key, txt, exp = vector
@@ -83,7 +86,11 @@ def vector_tests():
         print('Data:', exp)
         print('Expect:', txt)
         print('Actual:', out)
-        print('Success' if out == txt else 'Fail','\n')
+        print('Success' if out == txt else 'Fail', '\n')
+
+def nonascii_test():
+    print(encrypt('foo','bặr'))
 
 if __name__ == '__main__':
-    vector_tests()
+    # vector_tests()
+    nonascii_test()
