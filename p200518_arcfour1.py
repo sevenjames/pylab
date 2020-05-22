@@ -5,10 +5,20 @@ References:
 https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
 https://en.wikipedia.org/wiki/RC4
 For educational purposes only.
+
+BUG : Only works on single-byte text characters.
+Conversion functions assume single-byte text.
+Multi-byte characters raise error: ValueError: bytes must be in range(0, 256)
+
+TODO: process file at byte level. content encoding is irrelevant.
+arcfour inputfile outputfile
+    if args count is not 2, fail, print usage
+    if inputfile doesn't exist, fail, print error
+    if outputfile does exist, fail, print error
+    load inputfile
+    process file
+    write outputfile
 '''
-# BUG : Only works on ASCII text.
-# Most likely due to working with characters instead of bytes.
-# ASCII chars are 1 byte so that works. But non ASCII chars are more bytes.
 
 def ksa(key):
     '''Key Scheduling Algorithm'''
