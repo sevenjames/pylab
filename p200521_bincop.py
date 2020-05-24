@@ -1,4 +1,4 @@
-'''
+"""
 2020-05-21
 binary copy a file
 
@@ -14,7 +14,7 @@ consider
     os.path.exists('./file')
     with open(mode='rb')
 
-'''
+"""
 
 import sys
 import os.path
