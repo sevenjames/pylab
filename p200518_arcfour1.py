@@ -1,4 +1,4 @@
-'''
+"""
 2020-05-18
 ARCFOUR aka RC4 stream cipher algorithm.
 References:
@@ -18,10 +18,10 @@ arcfour inputfile outputfile
     load inputfile
     process file
     write outputfile
-'''
+"""
 
 def ksa(key):
-    '''Key Scheduling Algorithm'''
+    """Key Scheduling Algorithm that builds the Substitution Box s."""
     keylen = len(key)
     s = list(range(256))
     j = 0
@@ -31,7 +31,7 @@ def ksa(key):
     return s
 
 def prng(s):
-    '''Pseudo-Random Number Generator Algorithm'''
+    """Pseudo-Random Number Generator produces random byte k."""
     i, j = 0, 0
     while True:
         i = (i + 1) % 256
@@ -41,40 +41,40 @@ def prng(s):
         yield k
 
 def cipher(key, dat):
-    '''Process a list of decimal integer bytes with ARCFOUR stream cipher.'''
+    """XOR bytes of dat with bytes from PRNG and return the result."""
     keystream = prng(ksa(key))
     return [b ^ next(keystream) for b in dat]
 
 def encrypt(key, dat):
-    '''Encrypt text string to string of hex bytes.'''
+    """Encrypt text string to string of hex bytes."""
     key = convert_textstring_to_bytelist(key)
     dat = convert_textstring_to_bytelist(dat)
     return convert_bytelist_to_hexstring(cipher(key, dat))
 
 def decrypt(key, dat):
-    '''Decrypt string of hex bytes to string.'''
+    """Decrypt string of hex bytes to string."""
     key = convert_textstring_to_bytelist(key)
     dat = convert_hexstring_to_bytelist(dat)
     return convert_bytelist_to_textstring(cipher(key, dat))
 
 def convert_textstring_to_bytelist(textstring):
-    ''' 'foo' >> [102, 111, 111] '''
+    """ 'foo' >> [102, 111, 111] """
     return [ord(c) for c in textstring]
 
 def convert_bytelist_to_hexstring(bytelist):
-    ''' [102, 111, 111] >> '666F6F' '''
+    """ [102, 111, 111] >> '666F6F' """
     return bytes(bytelist).hex().upper()
 
 def convert_hexstring_to_bytelist(hexstring):
-    ''' '666F6F' >> [102, 111, 111] '''
+    """ '666F6F' >> [102, 111, 111] """
     return list(bytes.fromhex(hexstring))
 
 def convert_bytelist_to_textstring(bytelist):
-    ''' [102, 111, 111] >> 'foo' '''
+    """ [102, 111, 111] >> 'foo' """
     return ''.join([chr(b) for b in bytelist])
 
 def vector_tests():
-    '''Vector Tests'''
+    """Vector tests using known plaintexts and ciphertexts."""
     test_vectors = [
         ('Key', 'Plaintext', 'BBF316E8D940AF0AD3'),
         ('Wiki', 'pedia', '1021BF0420'),
@@ -99,6 +99,7 @@ def vector_tests():
         print('Success' if out == txt else 'Fail', '\n')
 
 def nonascii_test():
+    """Test text with non-ascii character."""
     print(encrypt('foo','băr'))
 
 if __name__ == '__main__':
