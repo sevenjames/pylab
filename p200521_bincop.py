@@ -1,6 +1,6 @@
 """
-2020-05-21
 binary copy a file
+2020-05-21
 
 bincop inputfile outputfile
     if args count is not 2, fail, print usage
@@ -19,22 +19,25 @@ consider
 import sys
 import os.path
 
-def parse_args():
-    try:
-        if len(sys.argv) != 3:
-            raise ValueError('Error: Wrong number of arguments.')
-        if not os.path.exists(sys.argv[1]):
-            raise ValueError('Error: Input file not found.')
-        if os.path.exists(sys.argv[2]):
-            raise ValueError('Error: Output file already exists.')
-    except ValueError as err:
-        print(''.join(err.args))
-        print('Usage: bincop inputfile outputfile')
+def check_args():
+    if len(sys.argv) != 3:
+        raise ValueError('Error: Wrong number of arguments.')
+    if not os.path.exists(sys.argv[1]):
+        raise ValueError('Error: Input file not found.')
+    if os.path.exists(sys.argv[2]):
+        raise ValueError('Error: Output file already exists.')
 
-def process():
+def process_file():
     print('Processing file...')
 
-try:
-    parse_args()
-except:
-    raise
+def main():
+    try:
+        check_args()
+    except ValueError as error:
+        print(''.join(error.args))
+        print('Usage: bincop inputfile outputfile')
+    else:
+        process_file()
+
+if __name__ == "__main__":
+    main()
