@@ -27,9 +27,11 @@ def check_args():
     if os.path.exists(sys.argv[2]):
         raise ValueError('Error: Output file already exists.')
 
-def process_file():
+def process_file(inputfile, outputfile):
     print('Processing file...')
-
+    with open(inputfile, mode='r', newline='') as file:
+        print('foo')
+        
 def main():
     try:
         check_args()
@@ -37,7 +39,7 @@ def main():
         print(''.join(error.args))
         print('Usage: bincop inputfile outputfile')
     else:
-        process_file()
+        process_file(inputfile=sys.argv[1], outputfile=sys.argv[2])
 
 if __name__ == "__main__":
     main()
