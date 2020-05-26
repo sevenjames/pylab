@@ -1,6 +1,6 @@
 """
-2020-05-18
 ARCFOUR aka RC4 stream cipher algorithm.
+2020-05-18
 References:
 https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
 https://en.wikipedia.org/wiki/RC4
@@ -12,12 +12,6 @@ Multi-byte characters raise error: ValueError: bytes must be in range(0, 256)
 
 TODO: process file at byte level. content encoding is irrelevant.
 arcfour inputfile outputfile
-    if args count is not 2, fail, print usage
-    if inputfile doesn't exist, fail, print error
-    if outputfile does exist, fail, print error
-    load inputfile
-    process file
-    write outputfile
 """
 
 def ksa(key):
