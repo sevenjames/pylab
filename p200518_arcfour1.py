@@ -71,7 +71,7 @@ def convert_hexstring_to_bytelist(hexstring):
 
 def convert_bytelist_to_textstring(bytelist):
     """ [102, 111, 111] >> 'foo' """
-    return ''.join([chr(b) for b in bytelist])
+    return ''.join(chr(b) for b in bytelist)
 
 def vector_tests():
     """Vector tests using known plaintexts and ciphertexts."""
