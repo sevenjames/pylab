@@ -19,9 +19,9 @@ consider
 import sys
 import os.path
 
-def parse():
+def parse_args():
     try:
-        if not len(sys.argv) == 3:
+        if len(sys.argv) != 3:
             raise ValueError('Error: Wrong number of arguments.')
         if not os.path.exists(sys.argv[1]):
             raise ValueError('Error: Input file not found.')
@@ -30,10 +30,11 @@ def parse():
     except ValueError as err:
         print(''.join(err.args))
         print('Usage: bincop inputfile outputfile')
-    else:
-        process()
 
 def process():
-    print('Ok')
+    print('Processing file...')
 
-parse()
+try:
+    parse_args()
+except:
+    raise
