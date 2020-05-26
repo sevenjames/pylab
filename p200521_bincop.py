@@ -22,13 +22,14 @@ import os.path
 def parse():
     try:
         if not len(sys.argv) == 3:
-            raise ValueError('Usage: bincop inputfile outputfile')
+            raise ValueError('Error: Wrong number of arguments.')
         if not os.path.exists(sys.argv[1]):
-            raise ValueError('Input file does not exist: ', sys.argv[1])
+            raise ValueError('Error: Input file not found.')
         if os.path.exists(sys.argv[2]):
-            raise ValueError('Output file already exists: ', sys.argv[2])
+            raise ValueError('Error: Output file already exists.')
     except ValueError as err:
         print(''.join(err.args))
+        print('Usage: bincop inputfile outputfile')
     else:
         process()
 
