@@ -5,14 +5,7 @@ References:
 https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
 https://en.wikipedia.org/wiki/RC4
 For educational purposes only.
-
-BUG : Only works on single-byte text characters.
-Conversion functions assume single-byte text.
-Multi-byte characters raise error: ValueError: bytes must be in range(0, 256)
-
-TODO: fix option 1: convert strings to bytes instead of lists.
 TODO: new program: process file at byte level. content encoding is irrelevant.
-
 """
 
 def ksa(key):
@@ -38,35 +31,35 @@ def prng(s):
 def cipher(key, dat):
     """XOR bytes of dat with bytes from PRNG and return the result."""
     keystream = prng(ksa(key))
-    return [b ^ next(keystream) for b in dat]
+    return bytes(b ^ next(keystream) for b in dat)
 
 def encrypt(key, dat):
     """Encrypt text string to string of hex bytes."""
-    key = convert_textstring_to_bytelist(key)
-    dat = convert_textstring_to_bytelist(dat)
-    return convert_bytelist_to_hexstring(cipher(key, dat))
+    key = string_to_bytes(key)
+    dat = string_to_bytes(dat)
+    return bytes_to_hex(cipher(key, dat))
 
 def decrypt(key, dat):
     """Decrypt string of hex bytes to string."""
-    key = convert_textstring_to_bytelist(key)
-    dat = convert_hexstring_to_bytelist(dat)
-    return convert_bytelist_to_textstring(cipher(key, dat))
+    key = string_to_bytes(key)
+    dat = hex_to_bytes(dat)
+    return bytes_to_string(cipher(key, dat))
 
-def convert_textstring_to_bytelist(textstring):
-    """ 'foo' >> [102, 111, 111] """
-    return [ord(c) for c in textstring]
+def string_to_bytes(s):
+    """ 'băr' >> b'b\xc4\x83r' """
+    return str.encode(s)
 
-def convert_bytelist_to_hexstring(bytelist):
-    """ [102, 111, 111] >> '666F6F' """
-    return bytes(bytelist).hex().upper()
+def bytes_to_hex(b):
+    """ b'b\xc4\x83r' >> '62C48372' """
+    return b.hex().upper()
 
-def convert_hexstring_to_bytelist(hexstring):
-    """ '666F6F' >> [102, 111, 111] """
-    return list(bytes.fromhex(hexstring))
+def hex_to_bytes(h):
+    """ '62C48372' >> b'b\xc4\x83r' """
+    return bytes.fromhex(h)
 
-def convert_bytelist_to_textstring(bytelist):
-    """ [102, 111, 111] >> 'foo' """
-    return ''.join(chr(b) for b in bytelist)
+def bytes_to_string(b):
+    """ b'b\xc4\x83r' >> 'băr' """
+    return bytes.decode(b)
 
 def vector_tests():
     """Vector tests using known plaintexts and ciphertexts."""
@@ -92,11 +85,9 @@ def vector_tests():
         print('Expect:', txt)
         print('Actual:', out)
         print('Success' if out == txt else 'Fail', '\n')
-
-def nonascii_test():
-    """Test text with non-ascii character."""
-    print(encrypt('foo','băr'))
+    print('TEST MULTI-BYTE CHARACTERS')
+    print('foo, băr, C9E66E5B', encrypt('foo', 'băr'))
+    print('foo, C9E66E5B, băr', decrypt('foo', 'C9E66E5B'))
 
 if __name__ == '__main__':
-    # vector_tests()
-    nonascii_test()
+    vector_tests()
