@@ -10,8 +10,9 @@ BUG : Only works on single-byte text characters.
 Conversion functions assume single-byte text.
 Multi-byte characters raise error: ValueError: bytes must be in range(0, 256)
 
-TODO: process file at byte level. content encoding is irrelevant.
-arcfour inputfile outputfile
+TODO: fix option 1: convert strings to bytes instead of lists.
+TODO: new program: process file at byte level. content encoding is irrelevant.
+
 """
 
 def ksa(key):
