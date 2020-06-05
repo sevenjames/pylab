@@ -1,5 +1,5 @@
 """
-ARCFOUR aka RC4 stream cipher algorithm.
+ARCFOUR aka RC4 stream cipher algorithm in Python 3.
 2020-05-18
 References:
 https://tools.ietf.org/html/draft-kaukonen-cipher-arcfour-03
