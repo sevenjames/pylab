@@ -1,4 +1,5 @@
 '''
+2020-01-26
 scratch for
 https://w3resource.com/python-exercises/
 '''

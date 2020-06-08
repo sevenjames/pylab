@@ -1,4 +1,5 @@
 """
+2020-02-13
 scratch for
 https://w3resource.com/python-exercises/
 Basic Part 1 (previously completed: 3-6)

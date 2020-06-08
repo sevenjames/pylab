@@ -1,6 +1,6 @@
 """
+2020-02-12
 simple random password generator
-
 """
 
 import string

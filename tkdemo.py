@@ -1,3 +1,7 @@
+"""
+2020-06-08 tiny tk sample copied from https://realpython.com/python-lambda/
+"""
+
 import tkinter as tk
 import sys
 
