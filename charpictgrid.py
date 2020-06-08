@@ -1,5 +1,5 @@
 """
-2020-02-12
+2020-02-13
 Character Picture Grid
 Exercise from "Automate the Boring Stuff", chapter 4.
 Given a list of lists of single character strings,

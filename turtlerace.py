@@ -2,7 +2,7 @@
 2020-02-27
 turtle race
 copied from:
-https://github.com/techwithtim/Turtle-Race/blob/master/main.py
+https://github.com/techwithtim/Turtle-Race/
 """
 
 import random
