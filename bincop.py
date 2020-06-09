@@ -1,45 +1,51 @@
 """
-binary copy a file
+copy a file as a raw bytes object
 2020-05-21
-
-bincop inputfile outputfile
-    if args count is not 2, fail, print usage
-    if inputfile doesn't exist, fail, print error
-    if outputfile does exist, fail, print error
-    load inputfile (in chunks?)
-    write outputfile
-
-consider
-    sys.argv or argparse
-    os.path.exists('./file')
-    with open(mode='rb')
-
+usage: bincop inputfile outputfile
 """
 
 import sys
 import os.path
 
-def check_args():
-    if len(sys.argv) != 3:
-        raise ValueError('Error: Wrong number of arguments.')
-    if not os.path.exists(sys.argv[1]):
-        raise ValueError('Error: Input file not found.')
-    if os.path.exists(sys.argv[2]):
-        raise ValueError('Error: Output file already exists.')
 
-def process_file(inputfile, outputfile):
-    print('Processing file...')
-    with open(inputfile, mode='r', newline='') as file:
-        print('foo')
-        
-def main():
+def file_read(file):
     try:
-        check_args()
+        with open(file, mode='rb') as fob:
+            return fob.read()
+    except OSError as error:
+        print(f'Read error: {error}')
+        raise
+
+def file_write(file, data):
+    try:
+        with open(file, mode='wb') as fob:
+            fob.write(data)
+    except OSError as error:
+        print(f'Write error: {error}')
+        raise
+
+def check_args(args):
+    try:
+        if len(args) != 3:
+            raise ValueError('Wrong number of arguments.')
+        if not os.path.exists(args[1]):
+            raise ValueError('Input file not found.')
+        if os.path.exists(args[2]):
+            raise ValueError('Output file already exists.')
     except ValueError as error:
-        print(''.join(error.args))
+        print(f'Error: {error}')
         print('Usage: bincop inputfile outputfile')
     else:
-        process_file(inputfile=sys.argv[1], outputfile=sys.argv[2])
+        return True
+
+def main():
+    """load entire file into bytes object, then write that object out"""
+    if check_args(sys.argv):
+        infile, outfile = sys.argv[1:3]
+        print(f'Copying {infile} to {outfile}')
+        data = file_read(infile)
+        file_write(outfile, data)
+        print('Copy success.')
 
 if __name__ == "__main__":
     main()
