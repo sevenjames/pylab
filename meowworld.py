@@ -7,8 +7,5 @@ def meow(s):
 def give(s):
     return bytes.decode(bytes.fromhex(s))
 
-def pack(s):
-    return bytes.hex(str.encode(s))
-
 tuna = '5572797962206a626579712e'
 print(meow(give(tuna)))
