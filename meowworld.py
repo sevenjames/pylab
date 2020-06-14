@@ -1,6 +1,6 @@
 def meow(snack):
-    (c,a,t) = (65,26,32)
-    (m,e,o,w) = (c,c+a,c+t,c+a+t)
+    (c, a, t) = (65, 26, 32)
+    (m, e, o, w) = (c, c+a, c+t, c+a+t)
     purr = ''.join([chr(i) for i in range(m,e)])
     hiss = ''.join([chr(i) for i in range(o,w)])
     chew = ''.join([''.join(i) for i in list(zip(purr,hiss))])
