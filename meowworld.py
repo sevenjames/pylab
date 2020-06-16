@@ -10,7 +10,7 @@ def meow_two(snack):
     (c, a, t) = (65, 26, 32)
     purr = ''.join(chr(i) for i in range(c, c+a))
     chew = ''.join(chr(i) for i in range(c+t, c+a+t))
-    eat = dict(zip(purr+chew,purr[13:]+purr[:13]+chew[13:]+chew[:13]))
+    eat = dict(zip(purr+chew, purr[13:]+purr[:13]+chew[13:]+chew[:13]))
     return ''.join([eat.get(bite, bite) for bite in snack])
 
 def give(s):
