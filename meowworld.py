@@ -16,7 +16,7 @@ def give(s):
     return bytes.decode(bytes.fromhex(s))
 
 def sample():
-    tuna = '5572797962206a626579712e'
+    tuna = '55727979622c205a72626a21'
     print(meow(give(tuna)))
 
 if __name__ == "__main__":
